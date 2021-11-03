@@ -50,6 +50,19 @@ function onInit() {
 
 function renderPlaces(places){
     console.log(places)
+    var strHTML = places.map((place)=>{
+        return `    <div class="inner-places-info">
+                        <p> id - ${place.id} </p>
+                        <p> name - ${place.name} </p>
+                        <p> lat - ${place.lat} </p>
+                        <p> lng - ${place.lng} </p>
+                    </div>
+                `
+    })
+
+    document.querySelector('.locatian-container').innerHTML = strHTML.join('')
+    
+
 }
 
 
