@@ -7,6 +7,9 @@ import {
 import {
     PosByNameService
 } from './services/pos-by-name.service.js'
+import {
+    weatherService
+} from './services/weather.service.js'
 
 window.onload = onInit;
 window.onAddMarker = onAddMarker;
@@ -15,25 +18,26 @@ window.onGetLocs = onGetLocs;
 window.onGetUserPos = onGetUserPos;
 window.onSearchPlace = onSearchPlace;
 window.onCopyLink = onCopyLink;
+window.onGetWeather = onGetWeather;
 
 function onInit() {
     const urlSearchParams = new URLSearchParams(window.location.search);
     const params = Object.fromEntries(urlSearchParams.entries());
     console.log(params)
-    if (params.hasOwnProperty('lat')&&params.hasOwnProperty('lng')){
-        mapService.initMap(+params.lat,+params.lng)
-        .then(() => {
-            console.log('Map is ready');
-        })
-        .catch(() => console.log('Error: cannot init map'));
-    }else{
+    if (params.hasOwnProperty('lat') && params.hasOwnProperty('lng')) {
+        mapService.initMap(+params.lat, +params.lng)
+            .then(() => {
+                console.log('Map is ready');
+            })
+            .catch(() => console.log('Error: cannot init map'));
+    } else {
         mapService.initMap()
-        .then(() => {
-            console.log('Map is ready');
-        })
-        .catch(() => console.log('Error: cannot init map'));
+            .then(() => {
+                console.log('Map is ready');
+            })
+            .catch(() => console.log('Error: cannot init map'));
     }
-     
+
 }
 
 // This function provides a Promise API to the callback-based-api of getCurrentPosition
@@ -91,4 +95,10 @@ function onSearchPlace() {
 function onCopyLink(lat, lng) {
     const link = `https://yaakovmargalit.github.io/travel-tip/?lat=${lat}&lng=${lng}`
     navigator.clipboard.writeText(link)
+}
+
+
+function onGetWeather(lat, lng) {
+    return weatherService.getWeather(lat, lng)
+        .then(res => res.data.main.temp)
 }
