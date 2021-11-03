@@ -8,7 +8,7 @@ export const mapService = {
 
 var gMap;
 
-function initMap(lat = 32.0749831, lng = 34.9120554) {
+function initMap(lat = 32.047201, lng = 34.832581) {
     console.log('InitMap');
     return _connectGoogleApi()
         .then(() => {
@@ -42,7 +42,7 @@ function _connectGoogleApi() {
     if (window.google) return Promise.resolve()
     const API_KEY = 'AIzaSyDbCgiLMOvSqpuGSWeahVxane6dGFfR_CA' 
     var elGoogleApi = document.createElement('script');
-    elGoogleApi.src = `https://maps.googleapis.com/maps/api/js?key=${API_KEY}`;
+    elGoogleApi.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyDbCgiLMOvSqpuGSWeahVxane6dGFfR_CA`;
     elGoogleApi.async = true;
     document.body.append(elGoogleApi);
 
