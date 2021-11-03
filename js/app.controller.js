@@ -11,6 +11,11 @@ import {
     weatherService
 } from './services/weather.service.js'
 
+import {storageService} from './services/storageService.js'
+
+
+
+
 window.onload = onInit;
 window.onAddMarker = onAddMarker;
 window.onPanTo = onPanTo;
@@ -21,24 +26,32 @@ window.onCopyLink = onCopyLink;
 window.onGetWeather = onGetWeather;
 
 function onInit() {
+    storageService.loadFromStorage()
     const urlSearchParams = new URLSearchParams(window.location.search);
     const params = Object.fromEntries(urlSearchParams.entries());
     console.log(params)
     if (params.hasOwnProperty('lat') && params.hasOwnProperty('lng')) {
         mapService.initMap(+params.lat, +params.lng)
             .then(() => {
+                
                 console.log('Map is ready');
             })
             .catch(() => console.log('Error: cannot init map'));
     } else {
         mapService.initMap()
             .then(() => {
+                renderPlaces(locService.getLocs())
                 console.log('Map is ready');
             })
             .catch(() => console.log('Error: cannot init map'));
     }
 
 }
+
+function renderPlaces(places){
+    console.log(places)
+}
+
 
 // This function provides a Promise API to the callback-based-api of getCurrentPosition
 function getPosition() {

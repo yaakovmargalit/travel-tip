@@ -1,26 +1,35 @@
+import {
+    utilService
+} from "../utilService.js";
+import {
+    storageService
+} from "./storageService.js";
 
+import { locService } from "./loc.service.js";
 
 export const mapService = {
     initMap,
     addMarker,
-    panTo
+    panTo,
+    
 }
 
 var gMap;
 
-function initMap(lat=32.166313, lng= 34.843311) {
+
+function initMap(lat = 32.166313, lng = 34.843311) {
     console.log('InitMap');
     return _connectGoogleApi()
         .then(() => {
             console.log('google available');
             gMap = new google.maps.Map(
                 document.querySelector('#map'), {
-                center:{
-                    lat,
-                    lng
-                },
-                zoom: 15
-            })
+                    center: {
+                        lat,
+                        lng
+                    },
+                    zoom: 15
+                })
             console.log('Map!', gMap);
             addMarker({
                 lat,
@@ -32,18 +41,26 @@ function initMap(lat=32.166313, lng= 34.843311) {
                     lat,
                     lng
                 },
-              });
+            });
 
             infoWindow.open(gMap);
             gMap.addListener("click", (mapsMouseEvent) => {
                 let spotName = prompt('What is the name of the location you want to save?');
                 let clickedPos = mapsMouseEvent.latLng.toJSON();
-                console.log(spotName,clickedPos)
-                // addFavSpot(clickedPos, spotName);
-              })    
+                console.log(spotName, clickedPos)
+                locService.addMyLocation(clickedPos, spotName);
+            })
         })
-        
 }
+
+
+
+
+
+
+
+
+
 
 function addMarker(loc) {
     var marker = new google.maps.Marker({
@@ -62,9 +79,9 @@ function panTo(lat, lng) {
 
 function _connectGoogleApi() {
     if (window.google) return Promise.resolve()
-    const API_KEY = 'AIzaSyDbCgiLMOvSqpuGSWeahVxane6dGFfR_CA'; 
+    const API_KEY = 'AIzaSyDbCgiLMOvSqpuGSWeahVxane6dGFfR_CA';
     var elGoogleApi = document.createElement('script');
-    elGoogleApi.src = `https://maps.googleapis.com/maps/api/js?key=${API_KEY}`;
+    elGoogleApi.src = `https://maps.googleapis.com/maps/api/js?key=${API_KEY}&language=en&region=IL`;
     elGoogleApi.async = true;
     document.body.append(elGoogleApi);
 
