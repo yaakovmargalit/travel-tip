@@ -8,14 +8,17 @@ export const mapService = {
 
 var gMap;
 
-function initMap(lat = 32.047201, lng = 34.832581) {
+function initMap(lat=32.166313, lng= 34.843311) {
     console.log('InitMap');
     return _connectGoogleApi()
         .then(() => {
             console.log('google available');
             gMap = new google.maps.Map(
                 document.querySelector('#map'), {
-                center: { lat, lng },
+                center:{
+                    lat,
+                    lng
+                },
                 zoom: 15
             })
             console.log('Map!', gMap);
@@ -23,7 +26,23 @@ function initMap(lat = 32.047201, lng = 34.832581) {
                 lat,
                 lng
             })
+            let infoWindow = new google.maps.InfoWindow({
+                content: "Click the map to get Lat/Lng!",
+                position: {
+                    lat,
+                    lng
+                },
+              });
+
+            infoWindow.open(gMap);
+            gMap.addListener("click", (mapsMouseEvent) => {
+                let spotName = prompt('What is the name of the location you want to save?');
+                let clickedPos = mapsMouseEvent.latLng.toJSON();
+                console.log(spotName,clickedPos)
+                // addFavSpot(clickedPos, spotName);
+              })    
         })
+        
 }
 
 function addMarker(loc) {
