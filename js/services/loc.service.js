@@ -1,5 +1,32 @@
 export const locService = {
-    getLocs
+    getLocs,
+    addMyLocation,
+
+}
+
+import {utilService} from '../utilService.js'
+import { storageService } from './storageService.js'
+
+var PLACE_KEY = 'placesDB'
+var gPlaces = storageService.loadFromStorage(PLACE_KEY) || []
+
+function addMyLocation(position, placeName) {
+    var currPlace = _createPlace(position, placeName)
+    console.log(currPlace)
+    if (!gPlaces.length) gPlaces[0] = currPlace
+    else gPlaces.push(currPlace)
+    storageService.saveToStorage(PLACE_KEY, gPlaces)
+}
+
+
+function _createPlace(position, placeName) {
+    return {
+        id: utilService.makeId(),
+        name: placeName,
+        lat: position.lat,
+        lng: position.lng,
+        createdAt: Date.now()
+    }
 }
 
 
@@ -9,11 +36,9 @@ const locs = [
 ]
 
 function getLocs() {
-    return new Promise((resolve, reject) => {
-        setTimeout(() => {
-            resolve(locs);
-        }, 2000)
-    });
+        console.log(gPlaces)
+        return gPlaces
+       
 }
 
 
