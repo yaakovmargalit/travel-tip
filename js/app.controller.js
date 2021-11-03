@@ -24,6 +24,8 @@ window.onGetUserPos = onGetUserPos;
 window.onSearchPlace = onSearchPlace;
 window.onCopyLink = onCopyLink;
 window.onGetWeather = onGetWeather;
+window.onGoTo = onGoTo;
+window.onDeleteLocation = onDeleteLocation;
 
 
 function onInit() {
@@ -41,7 +43,7 @@ function onInit() {
     } else {
         mapService.initMap()
             .then(() => {
-                renderPlaces(locService.getLocs())
+                renderPlaces()
                 console.log('Map is ready');
             })
             .catch(() => console.log('Error: cannot init map'));
@@ -49,21 +51,33 @@ function onInit() {
 
 }
 
-function renderPlaces(places){
-    console.log(places)
+function renderPlaces(places=locService.getLocs()){
+
+
     var strHTML = places.map((place)=>{
         return `    <div class="inner-places-info">
                         <p> id - ${place.id} </p>
                         <p> name - ${place.name} </p>
                         <p> lat - ${place.lat} </p>
                         <p> lng - ${place.lng} </p>
+                        <button class="goBtn" onclick="onGoTo(${place.lat}, ${place.lng})">Go</button>
+                        <button class="deleteBtn" onclick="onDeleteLocation('${place.id}')">Delete</button>
                     </div>
+                    <hr>
                 `
     })
+    document.querySelector('.locations-box').innerHTML = strHTML.join('')
+}
 
-    document.querySelector('.locatian-container').innerHTML = strHTML.join('')
-    
+function onGoTo(lat,lng){
+    mapService.panTo(lat,lng)
+}
 
+
+function onDeleteLocation(id){
+    console.log(id)
+    locService.removePlace(id)
+    renderPlaces()
 }
 
 

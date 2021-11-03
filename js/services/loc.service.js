@@ -1,6 +1,7 @@
 export const locService = {
     getLocs,
     addMyLocation,
+    removePlace
 
 }
 
@@ -30,15 +31,22 @@ function _createPlace(position, placeName) {
 }
 
 
-const locs = [
-    { name: 'Greatplace', lat: 32.047104, lng: 34.832384 }, 
-    { name: 'Neveragain', lat: 32.047201, lng: 34.832581 }
-]
+// const locs = [
+//     { name: 'Greatplace', lat: 32.047104, lng: 34.832384 }, 
+//     { name: 'Neveragain', lat: 32.047201, lng: 34.832581 }
+// ]
 
 function getLocs() {
         console.log(gPlaces)
         return gPlaces
-       
+}
+
+
+function removePlace(id){
+    console.log('idddd',id)
+    const idx = gPlaces.findIndex(place => place.id === id);
+    gPlaces.splice(idx, 1);
+    storageService.saveToStorage(PLACE_KEY, gPlaces);
 }
 
 
