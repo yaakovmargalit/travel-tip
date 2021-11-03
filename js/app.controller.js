@@ -25,6 +25,7 @@ window.onSearchPlace = onSearchPlace;
 window.onCopyLink = onCopyLink;
 window.onGetWeather = onGetWeather;
 
+
 function onInit() {
     storageService.loadFromStorage()
     const urlSearchParams = new URLSearchParams(window.location.search);
@@ -33,7 +34,7 @@ function onInit() {
     if (params.hasOwnProperty('lat') && params.hasOwnProperty('lng')) {
         mapService.initMap(+params.lat, +params.lng)
             .then(() => {
-                
+                updateCopyBtn(+params.lat, +params.lng)
                 console.log('Map is ready');
             })
             .catch(() => console.log('Error: cannot init map'));
@@ -95,9 +96,7 @@ function onGetUserPos() {
         .then(pos => {
             onPanTo(pos.coords.latitude, pos.coords.longitude)
             onAddMarker(pos.coords.latitude, pos.coords.longitude)
-            // console.log('User position is:', pos.coords);
-            // document.querySelector('.user-pos').innerText =
-            //     `Latitude: ${pos.coords.latitude} - Longitude: ${pos.coords.longitude}`
+            updateCopyBtn(pos.coords.latitude, pos.coords.longitude)
         })
         .catch(err => {
             console.log('err!!!', err);
@@ -115,6 +114,7 @@ function onSearchPlace() {
         .then((pos) => {
             onPanTo(pos.lat, pos.lng)
             onAddMarker(pos.lat, pos.lng)
+            updateCopyBtn(pos.lat, pos.lng)
         })
 }
 
@@ -127,4 +127,10 @@ function onCopyLink(lat, lng) {
 function onGetWeather(lat, lng) {
     return weatherService.getWeather(lat, lng)
         .then(res => res.data.main.temp)
+}
+
+function updateCopyBtn(lat, lng){
+    var elCopyBtn = document.querySelector('.copy-btn')
+    console.log('sdsd')
+    elCopyBtn.onclick = onCopyLink(lat, lng)
 }
