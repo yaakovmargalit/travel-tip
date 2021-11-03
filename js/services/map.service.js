@@ -49,7 +49,8 @@ function addMarker(loc) {
     var marker = new google.maps.Marker({
         position: loc,
         map: gMap,
-        title: 'Hello World!'
+        title: 'Hello World!',
+        
     });
     return marker;
 }
