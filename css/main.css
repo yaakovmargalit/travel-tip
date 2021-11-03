@@ -80,3 +80,7 @@ button:hover{
 .map-box{
     border-radius: 10px;
 }
+
+.marker{
+    background-color: rgb(152, 204, 206);
+}

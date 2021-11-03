@@ -67,8 +67,19 @@ function addMarker(loc) {
         position: loc,
         map: gMap,
         title: 'Hello World!',
+        icon: 'img/icon.png'
         
     });
+    var infowindow = new google.maps.InfoWindow({
+        content:`<div class="marker">
+        <img src="img/ca.png"/>
+        </div>`
+
+      });
+
+    google.maps.event.addListener(marker, 'click', function() {
+        infowindow.open(map,marker);
+      });
     return marker;
 }
 
