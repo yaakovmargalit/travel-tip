@@ -45,6 +45,14 @@ function onInit() {
     } else {
         mapService.initMap()
             .then(() => {
+                mapService.getMap().addListener("click", (mapsMouseEvent) => {
+                    let spotName = prompt('What is the name of the location you want to save?');
+                    if (!spotName) return 
+                    let clickedPos = mapsMouseEvent.latLng.toJSON();
+                    console.log(spotName, clickedPos)
+                    locService.addMyLocation(clickedPos, spotName);
+                    renderPlaces()
+                })
                 renderPlaces()
                 console.log('Map is ready');
             })
@@ -89,7 +97,6 @@ function onGoTo(lat, lng) {
                 document.querySelector('.weather-box img').src = 'img/sun.png'
                 document.querySelector('.weather-box h3').innerText = temp + '°C'
             }
-
         })
 }
 

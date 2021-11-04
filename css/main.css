@@ -68,6 +68,9 @@ button:hover{
 /* main --- map & list */
 .main>:first-child {
     flex: 3;
+    overflow: scroll;
+    height: 400px;
+    padding: 8px;
 }
 
 .main>:last-child {
