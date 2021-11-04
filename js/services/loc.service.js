@@ -7,11 +7,14 @@ export const locService = {
 
 import {utilService} from '../utilService.js'
 import { storageService } from './storageService.js'
+import { mapService } from './map.service.js'
+
 
 var PLACE_KEY = 'placesDB'
 var gPlaces = storageService.loadFromStorage(PLACE_KEY) || []
 
 function addMyLocation(position, placeName) {
+    onAddMarker(position.lat,position.lng)
     var currPlace = _createPlace(position, placeName)
     console.log(currPlace)
     if (!gPlaces.length) gPlaces[0] = currPlace
@@ -26,9 +29,12 @@ function _createPlace(position, placeName) {
         name: placeName,
         lat: position.lat,
         lng: position.lng,
-        createdAt: Date.now()
+        createdAt: Date.now(),
     }
 }
+
+
+
 
 
 // const locs = [

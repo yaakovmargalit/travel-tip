@@ -7,11 +7,12 @@ import {
 
 import { locService } from "./loc.service.js";
 
+
+
 export const mapService = {
     initMap,
     addMarker,
     panTo,
-    
 }
 
 var gMap;
@@ -46,19 +47,13 @@ function initMap(lat = 32.166313, lng = 34.843311) {
             infoWindow.open(gMap);
             gMap.addListener("click", (mapsMouseEvent) => {
                 let spotName = prompt('What is the name of the location you want to save?');
+                if (!spotName) return 
                 let clickedPos = mapsMouseEvent.latLng.toJSON();
                 console.log(spotName, clickedPos)
                 locService.addMyLocation(clickedPos, spotName);
             })
         })
 }
-
-
-
-
-
-
-
 
 
 

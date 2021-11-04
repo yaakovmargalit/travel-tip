@@ -11,7 +11,9 @@ import {
     weatherService
 } from './services/weather.service.js'
 
-import {storageService} from './services/storageService.js'
+import {
+    storageService
+} from './services/storageService.js'
 
 
 
@@ -51,10 +53,11 @@ function onInit() {
 
 }
 
-function renderPlaces(places=locService.getLocs()){
 
 
-    var strHTML = places.map((place)=>{
+function renderPlaces(places = locService.getLocs()) {
+
+    var strHTML = places.map((place) => {
         return `    <div class="inner-places-info">
                         <p> id - ${place.id} </p>
                         <p> name - ${place.name} </p>
@@ -69,12 +72,30 @@ function renderPlaces(places=locService.getLocs()){
     document.querySelector('.locations-box').innerHTML = strHTML.join('')
 }
 
-function onGoTo(lat,lng){
-    mapService.panTo(lat,lng)
+function onGoTo(lat, lng) {
+
+    mapService.panTo(lat, lng)
+    onAddMarker(lat, lng)
+    weatherService.getWeather(lat, lng)
+        .then((res) => {
+            var temp = res.data.main.temp
+            if (temp < 10) {
+                document.querySelector('.weather-box img').src = 'img/rain.png'
+                document.querySelector('.weather-box h3').innerText = temp + '°C'
+            } else if (temp > 10 && temp < 20) {
+                document.querySelector('.weather-box img').src = 'img/medim.png'
+                document.querySelector('.weather-box h3').innerText = temp + '°C'
+            } else {
+                document.querySelector('.weather-box img').src = 'img/sun.png'
+                document.querySelector('.weather-box h3').innerText = temp + '°C'
+            }
+
+        })
 }
 
 
-function onDeleteLocation(id){
+
+function onDeleteLocation(id) {
     console.log(id)
     locService.removePlace(id)
     renderPlaces()
@@ -143,7 +164,7 @@ function onGetWeather(lat, lng) {
         .then(res => res.data.main.temp)
 }
 
-function updateCopyBtn(lat, lng){
+function updateCopyBtn(lat, lng) {
     var elCopyBtn = document.querySelector('.copy-btn')
     console.log('sdsd')
     elCopyBtn.onclick = onCopyLink(lat, lng)
