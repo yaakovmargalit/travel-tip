@@ -35,30 +35,27 @@ function onInit() {
     const urlSearchParams = new URLSearchParams(window.location.search);
     const params = Object.fromEntries(urlSearchParams.entries());
     console.log(params)
+    var lat = 32.166313
+    var lng = 34.843311
     if (params.hasOwnProperty('lat') && params.hasOwnProperty('lng')) {
-        mapService.initMap(+params.lat, +params.lng)
-            .then(() => {
-                updateCopyBtn(+params.lat, +params.lng)
-                console.log('Map is ready');
-            })
-            .catch(() => console.log('Error: cannot init map'));
-    } else {
-        mapService.initMap()
-            .then(() => {
-                mapService.getMap().addListener("click", (mapsMouseEvent) => {
-                    let spotName = prompt('What is the name of the location you want to save?');
-                    if (!spotName) return 
-                    let clickedPos = mapsMouseEvent.latLng.toJSON();
-                    console.log(spotName, clickedPos)
-                    locService.addMyLocation(clickedPos, spotName);
-                    renderPlaces()
-                })
-                renderPlaces()
-                console.log('Map is ready');
-            })
-            .catch(() => console.log('Error: cannot init map'));
+        lat = +params.lat
+        lng = +params.lng
     }
-
+    mapService.initMap(lat, lng)
+        .then(() => {
+            updateCopyBtn(lat, lng)
+            mapService.getMap().addListener("click", (mapsMouseEvent) => {
+                let spotName = prompt('What is the name of the location you want to save?');
+                if (!spotName) return
+                let clickedPos = mapsMouseEvent.latLng.toJSON();
+                console.log(spotName, clickedPos)
+                locService.addMyLocation(clickedPos, spotName);
+                renderPlaces()
+            })
+            renderPlaces()
+            console.log('Map is ready');
+        })
+        .catch(() => console.log('Error: cannot init map'));
 }
 
 
